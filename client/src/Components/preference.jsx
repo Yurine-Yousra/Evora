@@ -33,12 +33,12 @@ export default function Preference() {
 
   const [myArray, setMyArray] = useState([]);
   const imageDATA = [
-    { img: img1, text: 'culture' },
-    { img: img2, text: 'Art' },
-    { img: img3, text: 'beauty' },
-    { img: img4, text: 'food' },
-    { img: img5, text: 'business' },
-    { img: img6, text: 'sport' },
+    { img: img1, text: 'Business' },
+    { img: img2, text: 'Cultural' },
+    { img: img3, text: 'Politics' },
+    { img: img4, text: 'Sports' },
+    { img: img5, text: 'Educational' },
+    { img: img6, text: 'Health & Care' },
   ];
   console.log(myArray);
   const handleClick = (dataindex) => {

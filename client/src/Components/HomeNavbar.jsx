@@ -9,8 +9,8 @@ const Navbar = () => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const Navigate = useNavigate();
   const navigationItems = [
-    ['About', ''],
-    ['Contact', ''],
+    ['About', '/About'],
+    ['Contact', '/Contact'],
   ];
   const { data: userData, isLoading, isError } = useQuery(['userData'], fetchUserData);
   
@@ -18,11 +18,8 @@ const Navbar = () => {
     const token = localStorage.getItem('token');
     if (token){
       try {
-      const response = await fetch('http://localhost:8000/user', {
+      const response = await fetch(`http://localhost:8000/users/${localStorage.getItem('userId')}`, {
         method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
       });
       if (!response.ok) {
         throw new Error('Failed to fetch user data');

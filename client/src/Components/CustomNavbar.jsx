@@ -1,29 +1,23 @@
-import {useState } from 'react'
+import {useState ,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import UserIcon from '../Assets/images/userIcon.svg'
 import Doorbell from '../Assets/images/Doorbell.svg'
 import Active from '../Assets/images/Active.svg'
-import { useProfileImage } from './ProfileImageContext';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import logo from "../Assets/Logo.png";
 
 const CustomNavbar = () => {
   const Navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [toogleDropdown, setToogleDropdown] = useState(false);
   const [notificationToogleDropdown, setNotificationToogleDropdown] = useState(false);
-  const { data: userData, isLoading, isError } = useQuery(['userData'], fetchUserData);
-  console.log(userData?.notification);
+  const { data: Data, isLoading, isError } = useQuery(['Data'], fetchUserData);
+  
   async function fetchUserData() {
     const token = localStorage.getItem('token');
     if (token){
       try {
-      const response = await fetch('http://localhost:8000/user', {
+      const response = await fetch(`http://localhost:8000/users/${localStorage.getItem('userId')}`, {
         method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
       });
       if (!response.ok) {
         throw new Error('Failed to fetch user data');
@@ -38,16 +32,35 @@ const CustomNavbar = () => {
     localStorage.clear();
     Navigate('/login');
   };
-  const [notifications, setNotifications] = useState(userData?.notification);
-
+  const [userData , setUserData] =useState(Data);
+  const [notifications, setNotifications] = useState(userData?.notificationUser);
+  const [notifications2, setNotifications2] = useState(userData?.notificationEvent);
+  useEffect(() => {
+    if (Data !== undefined) {
+      setUserData(Data);
+    }
+    
+    if (userData?.notificationUser !== undefined) {
+      setNotifications(userData.notificationUser);
+    }
+    if (userData?.notificationEvent !== undefined) {
+      setNotifications2(userData.notificationEvent);
+    }
+  }, [Data]);
   const handleNotificationClick = (id) => {
     setNotifications((prevNotifications) =>
       prevNotifications.map((notification) =>
-        notification.id === id ? { ...notification, newNote: false } : notification
+        notification._id === id ? { ...notification, newNote: false } : notification
       )
     );
   };
-  const {profileImage} = useProfileImage();
+  const handleNotificationClick2 = (id) => {
+    setNotifications2((prevNotifications) =>
+      prevNotifications.map((notification) =>
+        notification._id === id ? { ...notification, newNote: false } : notification
+      )
+    );
+  };
   return (
     <nav className='flex justify-between items-center max-[734px]:px-3 p-9 h-[74px] bg-white border border-[#9f9f9f]'>
             <div className=''>
@@ -64,8 +77,8 @@ const CustomNavbar = () => {
               </div>
             </Link>
             {[
-            ['About', ''],
-            ['Contact', ''],
+             ['About', '/About'],
+             ['Contact', '/Contact'],
             ].map(([title,url], index)=> (
             <div key={index}><Link to={url} className='border-black hover:border-b-2'>{title}</Link></div>
             ))}
@@ -83,19 +96,36 @@ const CustomNavbar = () => {
                       <p className='left-0 w-full pb-1 pl-3 border-b border-slate-100'>Notifications</p>
                       {notifications && notifications.length > 0 ? (notifications.map((notification) => (
                           <span
-                            key={notification.id}
-                            onClick={() => handleNotificationClick(notification.id)}
+                            key={notification._id}
+                            onClick={() => handleNotificationClick(notification._id)}
                             className='flex flex-row items-center justify-center w-full border rounded-lg cursor-pointer border-slate-100'
                           >
                             {notification.message && <img src={Active} alt="" />}
-                            <img className='w-10 h-10 mr-2' src={UserIcon} alt="" />
+                            <img className='w-10 h-10 mr-2' src={`http://localhost:8000/assets/${notification.user?.image}`}/>
                             <div className='flex flex-col'>
                               <p>{notification.message}</p>
                               <p>{notification.date}</p>
                             </div>
                           </span>
                         ))
-                      ) : (
+                      ): (
+                        <p>No notifications</p>
+                      )}
+                      {notifications2 && notifications2.length > 0 ?(notifications2.map((notification) => (
+                        <span
+                          key={notification._id}
+                          onClick={() => handleNotificationClick2(notification._id)}
+                          className='flex flex-row items-center justify-center w-full border rounded-lg cursor-pointer border-slate-100'
+                        >
+                          {notification.message && <img src={Active} alt="" />}
+                          <img className='w-10 h-10 mr-2' src={`http://localhost:8000/assets/${notification.event?.image}`} alt="" />
+                          <div className='flex flex-col'>
+                            <p>{notification.message}</p>
+                            <p>{notification.date}</p>
+                          </div>
+                        </span>
+                      ))
+                    )  : (
                         <p>No notifications</p>
                       )}
                     </div>

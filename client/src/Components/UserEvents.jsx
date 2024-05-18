@@ -28,6 +28,18 @@ const deleteEvent = async (eventId, token) => {
       throw new Error('Failed to delete event');
     }
   };
+  const deleteEvent2 = async (eventId, token) => {
+    const response = await fetch(`http://localhost:8000/deletEvent/${eventId}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete event');
+    }
+  };
   const ShowingEventCard = ({ data, token , isUser , passed }) => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -60,9 +72,14 @@ const deleteEvent = async (eventId, token) => {
     };
   
     const deleteEventMutation = useMutation((eventId) => deleteEvent(eventId, token));
-  
+    const deleteEventMutation2 = useMutation((eventId) => deleteEvent2(eventId, token));
     const handleDelete = (id) => {
       deleteEventMutation.mutate(id);
+      window.location.reload();
+    };
+    const handleDelete2 = (id) => {
+      deleteEventMutation2.mutate(id);
+      window.location.reload();
     };
     const handleEdit = (id)=>{
       navigate(`/EditEvent/${id}`);
@@ -125,15 +142,15 @@ const deleteEvent = async (eventId, token) => {
               <div className='flex flex-col w-[280px]' key={card._id}>
                     <div className="cards1"  >
                     <img className='w-[280px] h-[220px]' src={`http://localhost:8000/assets/${card.image}`} alt="image" />
-                <div className="absolute top-0 left-0 bg-white pt-0.5 pb-0.5 pe-2 ps-2"><p className="text-base font-medium">{card.price}</p></div>
-                <div onClick={() => handleCardClick(card._id)} className="flex justify-between items-center pt-2 pb-2 ps-1 pe-2 cursor-pointer">
-                <div className="basis-1/6 font-medium text-md text-center">
+                    <div className="absolute top-0 left-0 bg-white pt-0.5 pb-0.5 pe-2 ps-2">
+                 {card.sold ? <div className='text-base text-red-500 font-bold'>Canceled</div>:<p className="text-base font-medium">{card.price}</p>}</div>
+                <div onClick={() => handleCardClick(card._id)} className="flex items-center justify-between pt-2 pb-2 cursor-pointer ps-1 pe-2">
+                <div className="font-medium text-center basis-1/6 text-md">
                   <div>{new Date(card.date).getDate()}</div>
                   <div>{new Date(card.date).toLocaleString('default', { month: 'short' })}</div>
-                  <div>{new Date(card.date).getFullYear()}</div>
                 </div>
                     <div className="basis-3/6 ps-1">
-                        <h3 className="text-md font-medium text-center">{card.title}</h3>
+                        <h3 className="font-medium text-center text-md">{card.title}</h3>
                         <h4 >{data?.username}</h4>
                     </div>
                     <div className="basis-2/6"> <span className="font-medium ps-4">{data?.followers?.length} </span>Followers</div>
@@ -147,9 +164,10 @@ const deleteEvent = async (eventId, token) => {
                   </svg> }
                 </div>
                     </div>
-                    {isUser && 
+                    {(isUser && !card.sold) && 
                     <div className='space-x-6'>
-                      <button className='bg-red-600 rounded-xl font-semibold text-lg text-white pt-2 pb-2 w-32 pe-4 ps-4 mt-4 hover:scale-[1.01] hover:shadow-xl' onClick={() => handleDelete(card._id)}>Cancel </button>
+                      {!passed && <button className='bg-red-600 rounded-xl font-semibold text-lg text-white pt-2 pb-2 w-32 pe-4 ps-4 mt-4 hover:scale-[1.01] hover:shadow-xl' onClick={() => handleDelete(card._id)}>Cancel </button>}
+                      {passed && <button className='bg-red-600 rounded-xl font-semibold text-lg text-white pt-2 pb-2 w-32 pe-4 ps-4 mt-4 hover:scale-[1.01] hover:shadow-xl' onClick={() => handleDelete2(card._id)}>Delete </button>}
                       <button className='bg-blue-600 rounded-xl font-semibold text-lg text-white pt-2 pb-2 w-32 pe-4 ps-4 mt-4 hover:scale-[1.01] hover:shadow-xl' onClick={() => handleEdit(card._id)}>Edit</button>
                       </div> }
               </div>

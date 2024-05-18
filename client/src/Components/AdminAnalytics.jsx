@@ -2,7 +2,7 @@ import { useState } from "react"
 import LineChartDay from "./LineChartDay"
 import LineChartMonth from "./LineChartMonth";
 import LineChartYear from "./LineChartYear";
-export default function AdminAnalytics() {
+export default function AdminAnalytics({data}) {
   const [style1,setStyle1] = useState('font-bold text-cyan-900 underline');
   const [style2,setStyle2] = useState('');
   const [style3,setStyle3] = useState('');
@@ -47,9 +47,9 @@ export default function AdminAnalytics() {
         </div>
       </div>
       <div className="w-full">
-      {day && <LineChartDay/>}
-      {Month && <LineChartMonth/>}
-      {Year && <LineChartYear/>}
+      {day && <LineChartDay data ={data?.eventsPerDay}/>}
+      {Month && <LineChartMonth data ={data?.eventsPerMonth}/>}
+      {Year && <LineChartYear data ={data?.eventsPerYear}/>}
 
       </div>
     </div>

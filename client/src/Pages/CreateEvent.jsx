@@ -34,13 +34,75 @@ const createPostMutation = async ({ title, place, location, date, link, image, p
 };
 
 const CreateEvent = () => {
+  const wilayaOptions = [
+    { value: "", label: "Select a Wilaya" },
+    { value: "ADRAR", label: "01-Adrar" },
+    { value: "CHLEF", label: "02-Chlef" },
+    { value: "LAGHOUAT", label: "03-Laghouat" },
+    { value: "OUM EL BOUAGHI", label: "04-Oum El Bouaghi" },
+    { value: "BATNA", label: "05-Batna" },
+    { value: "BEJAIA", label: "06-Bejaia" },
+    { value: "BISKRA", label: "07-Biskra" },
+    { value: "BECHAR", label: "08-Bechar" },
+    { value: "BLIDA", label: "09-Blida" },
+    { value: "BOUIRA", label: "10-Bouira" },
+    { value: "Tamanrasset", label: "11-Tamanrasset" },
+    { value: "TEBESSA", label: "12-Tebessa" },
+    { value: "TLEMCEN", label: "13-Tlemcen" },
+    { value: "TIARET", label: "14-Tiaret" },
+    { value: "TIZI OUZOU", label: "15-Tizi Ouzou" },
+    { value: "ALGER", label: "16-Alger" },
+    { value: "DJELFA", label: "17-Djelfa" },
+    { value: "JIJEL", label: "18-Jijel" },
+    { value: "SETIF", label: "19-Setif" },
+    { value: "SAIDA", label: "20-Saida" },
+    { value: "SKIKDA", label: "21-Skikda" },
+    { value: "SIDI BEL ABBES", label: "22-Sidi Bel Abbes" },
+    { value: "ANNABA", label: "23-Annaba" },
+    { value: "GUELMA", label: "24-Guelma" },
+    { value: "CONSTANTINE", label: "25-Constantine" },
+    { value: "MEDea", label: "26-Medea" },
+    { value: "MOSTAGANEM", label: "27-Mostaganem" },
+    { value: "M'SILA", label: "28-M'Sila" },
+    { value: "MASCARA", label: "29-Mascara" },
+    { value: "OUARGLA", label: "30-Ouargla" },
+    { value: "ORAN", label: "31-Oran" },
+    { value: "EL BAYADH", label: "32-El Bayadh" },
+    { value: "ILLIZI", label: "33-Illizi" },
+    { value: "BORDJ BOU ARRERIDJ", label: "34-Bordj Bou Arreridj" },
+    { value: "BOUMERDES", label: "35-Boumerdes" },
+    { value: "EL TAREF", label: "36-El Taref" },
+    { value: "TINDOUF", label: "37-Tindouf" },
+    { value: "TISSEMSILT", label: "38-Tissemsilt" },
+    { value: "EL OUED", label: "39-El Oued" },
+    { value: "KHENCHELA", label: "40-Khenchela" },
+    { value: "SOUK AHRAS", label: "41-Souk Ahras" },
+    { value: "TIPAZA", label: "42-Tipaza" },
+    { value: "MILA", label: "43-Mila" },
+    { value: "AIN DEFLA", label: "44-Ain Defla" },
+    { value: "NAAMA", label: "45-Naama" },
+    { value: "AIN TEMOUCHENT", label: "46-Ain Temouchent" },
+    { value: "GHARDAIA", label: "47-Ghardaia" },
+    { value: "RELIZANE", label: "48-Relizane" },
+    { value: "TIMIMOUN", label: "49-Timimoun" },
+    { value: "BORDJ BADJI MOKHTAR", label: "50-Bordj Badji Mokhtar" },
+    { value: "OULED DJELLAL", label: "51-Ouled Djellal" },
+    { value: "BENI ABBES", label: "52-Beni Abbes" },
+    { value: "IN SALAH", label: "53-In Salah" },
+    { value: "IN GUEZZAM", label: "54-In Guezzam" },
+    { value: "TOUGGOURT", label: "55-Touggourt" },
+    { value: "DJANET", label: "56-Djanet" },
+    { value: "EL MEGHAIR", label: "57-El Meghair" },
+    { value: "EL MENIAA", label: "58-El Meniaa" },
+  ];
+  
+
   const [success , isSuccess] = useState(false);
   const mutation = useMutation(createPostMutation, { 
     onSuccess: (data) => { 
       console.log('Post created successfully:', data); 
     }, 
   });
-  const Navigate = useNavigate();
   const [charCount, setCharCount] = useState(0);
   const[description , setInputText] = useState('');
   const [isDateInputVisible, setIsDateInputVisible] = useState(false);
@@ -54,7 +116,7 @@ const CreateEvent = () => {
   const [price , setPrice] = useState('');
   const [image, setImages] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
-  
+  const [passed, setPassed] = useState(false);
   const handleInputChange = (event) => {
     setInputText( event.target.value);
     const currentLength = description.length;
@@ -130,15 +192,13 @@ const CreateEvent = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!date || !timeValue) {
-      setErrorMsg('Please enter both date and time');
+    var mydate = new Date(date);
+    var currentDate = new Date()  
+    if (mydate <= currentDate ){
+      setPassed(true);
       return;
-    } else {
-      if (image.length === 0) {
-        setErrorMsg('Please upload at least one image');
-        return;
-      }
     }
+    
     mutation.mutate({ title, place, location, date, link, image : image[0] , price ,description, category });
     isSuccess(true);
   };
@@ -147,8 +207,8 @@ const CreateEvent = () => {
     <>
     <div className='bg-[#E1E1E1] pb-8 w-full wrapper' >
       <Navbar />
-      <main className='px-10 py-4 mx-32 my-20 max-md:mx-0 max-lg:mx-6 bg-white rounded-lg min-h-rest'>
-        <h1 className='flex justify-center text-3xl text-blue-950 font-semibold'>Create New Event</h1>
+      <main className='px-10 py-4 mx-32 my-20 bg-white rounded-lg max-md:mx-0 max-lg:mx-6 min-h-rest'>
+        <h1 className='flex justify-center text-3xl font-semibold text-blue-950'>Create New Event</h1>
         <form className='flex flex-col mt-4 space-y-3' onSubmit={handleSubmit}>
           <input 
           type="text" 
@@ -158,6 +218,7 @@ const CreateEvent = () => {
           value={title}
           onChange={handleTitleChange}
           />
+          {passed && <p className='text-sm text-red-600 font-semiBold'>The date is in the past.</p>}
           <input
             className='p-2 outline-none border border-[#bdbdbd] rounded-lg placeholder:text-gray-600 focus:outline-none focus:text-black focus:bg-white focus:border-gray-500'
             type="text"
@@ -201,14 +262,18 @@ const CreateEvent = () => {
             placeholder="Location"
             onChange={handleLocationChange}
           />
-          <input
-            type="text"
-            required
-            value={place}
-            className="p-2 outline-none border border-[#bdbdbd] rounded-lg placeholder:text-gray-600 focus:outline-none focus:text-black focus:bg-white focus:border-gray-500"
-            placeholder="Wilaya"
-            onChange={handleWilayaChange}
-          />
+          <select
+              value={place}
+              onChange={handleWilayaChange}
+              required
+              className="block appearance-none w-full cursor-pointer bg-white border border-[#bdbdbd] text-gray-600 py-2 px-2 pr-8 rounded-lg shadow-sm leading-tight focus:outline-none focus:text-black focus:bg-white focus:border-gray-500"
+          >
+              {wilayaOptions.map((option, index) => (
+                  <option key={index} value={option.value}>
+                      {option.label}
+                  </option>
+              ))}
+          </select>
           <input
             type="text"
             required
@@ -235,7 +300,7 @@ const CreateEvent = () => {
             <option value="" disabled hidden>Select a Category</option>
             <option value="Business">Business</option>
             <option value="Cultural">Cultural</option>
-            <option value="Cultural">Cultural</option>
+            <option value="Art">Art</option>
             <option value="Politics">Politics</option>
             <option value="Sports">Sports</option>
             <option value="Educational">Educational</option>
@@ -277,11 +342,11 @@ const CreateEvent = () => {
         </form>
       </main>
     </div>
-    {success &&  <div className='fixed inset-0 z-50 flex backdrop-blur-md justify-center items-center w-screen h-screen'>
+    {success &&  <div className='fixed inset-0 z-50 flex items-center justify-center w-screen h-screen backdrop-blur-md'>
             <div className=" bg-gray-200 flex flex-col justify-center shadow-xl rounded-lg w-[500px] h-[200px] max-[520px]:w-[400px] max-[415px]:w-[300px]">
-             <div className="flex flex-col items-center gap-4 pt-8 justify-center mb-8">
+             <div className="flex flex-col items-center justify-center gap-4 pt-8 mb-8">
              <h1 className="text-2xl font-bold text-center"> Your event has been sent to the admin for approval or refusal. </h1>
-                <Link to={'/'} className='bg-blue-600 text-white font-semibold text-xl p-2 rounded-lg '>Go to Home</Link>
+                <Link to={'/'} className='p-2 text-xl font-semibold text-white bg-blue-600 rounded-lg '>Go to Home</Link>
              </div>
             </div>
         </div>}

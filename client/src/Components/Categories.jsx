@@ -21,16 +21,34 @@ const categoriesData = [
   ['Health & Care', cat7],
 ];
 const fetchPosts = async () => {
-  try {
-    const response = await fetch('http://localhost:8000/randomEvents');
-    const eventData = await response.json();
-    console.log("Fetched data:", eventData);
-
-    return { event: eventData }; // Wrap the data in an object with the 'event' property
+  if (localStorage.getItem('userId')) {
+    try { // Replace 'your_token_here' with your actual token
+      const response = await fetch('http://localhost:8000/feed', {
+          headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+      });
+      const eventData = await response.json();
+      console.log("Fetched data:", eventData);
+  
+      return { event: eventData }; // Wrap the data in an object with the 'event' property
   } catch (error) {
-    console.error("Error fetching posts:", error.message);
-    throw error;
+      console.error("Error fetching posts:", error.message);
+      throw error;
+  }  
+  } else {
+    try {
+      const response = await fetch('http://localhost:8000/randomEvents');
+      const eventData = await response.json();
+      console.log("Fetched data:", eventData);
+  
+      return { event: eventData }; // Wrap the data in an object with the 'event' property
+    } catch (error) {
+      console.error("Error fetching posts:", error.message);
+      throw error;
+    }
   }
+  
 };
 
 
@@ -174,7 +192,7 @@ export default function Categories() {
     <div className="relative">
         { (data.length != 0)  ? (
           <div className="grid grid-cols-3 max-[1070px]:grid-cols-2 max-[711px]:grid-cols-1 justify-items-center mt-16 mb-16" >
-            { data.map((card) => (
+            { data?.map((card) => (
               <div className="cards" key={card._id}>
                           <img  src={`http://localhost:8000/assets/${card.image}`} alt="" />
                           <div className="absolute top-0 left-0 bg-white pt-0.5 pb-0.5 pe-2 ps-2"><p className="text-base font-medium">{card.price} </p></div>

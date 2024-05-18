@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useQuery ,useMutation  } from 'react-query';
+import { useQuery ,useMutation, isError  } from 'react-query';
 import Navbar from '../Components/CustomNavbar';
 import LikedEvents from '../Components/LikedEvents';
 import Events from '../Components/UserEvents';
@@ -21,7 +21,11 @@ export default function Profile() {
     const [match , setmatch] = useState(false);
     const [pre , setPre] =useState(false);
     const [Otp , setOtp] =useState('');
-    const [Ver , setVer] =useState(false)
+    const [ootp , isotp] =useState(false);
+    const [Ver , setVer] =useState(false);
+    const [error , seterror] =useState(false);
+    const [email , setEmail] = useState('');
+    const [passwordchecked, isPasswordchecked] = useState(true); 
 
     function fetchUserData() {
         return fetch(`http://localhost:8000/users/${id}`)
@@ -69,18 +73,21 @@ export default function Profile() {
     };
 
     
-    const generateOtp = useMutation(() => fetch('http://localhost:8000/generateOTP', {
-        method: 'GET',
+    const generateOtp = useMutation((email) => fetch('http://localhost:8000/generateOTP', {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
+        body : JSON.stringify({ email: email })
     }));
     
-    const handleReset = async () => {
+    const handleReset = async (e) => {
+        e.preventDefault();
         try {
-            await generateOtp.mutate();
-            isreset(true);
+            await generateOtp.mutate(email);
+            isreset(false);
+             isotp(true);
         } catch (err) {
             console.error(err);
         }
@@ -101,9 +108,9 @@ export default function Profile() {
                 throw new Error('Invalid OTP');
             }
             setVer(true);
-            isreset(false);
+            isotp(false);
         } catch (error) {
-            console.error(error);
+            seterror(true)
         }
     };
     
@@ -113,9 +120,10 @@ export default function Profile() {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (confirm !== password) {
-            setmatch(true);
-        } else {
+        const isPowerful = isPowerfulPassword(password);
+        if (confirm != password) {setmatch(true)} else setmatch(false) 
+        isPasswordchecked(isPowerful);
+          if (!match && isPowerful){
             try {
                 const response = await fetch('http://localhost:8000/resetPassword', {
                     method: 'PUT',
@@ -130,6 +138,7 @@ export default function Profile() {
                 }
                 setConfirm('');
                 setPassword('');
+                window.location.reload();
                 // Add any additional logic here after successfully resetting the password
             } catch (error) {
                 console.error(error);
@@ -137,6 +146,21 @@ export default function Profile() {
             }
         }
     };
+    function isPowerfulPassword(password) {
+        // Define criteria for a powerful password
+        const minLength = 8;
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumbers = /\d/.test(password);
+        const hasSpecialChars = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
+        return (
+            (password.length >= minLength &&
+            hasUpperCase &&
+            hasLowerCase &&
+            hasNumbers &&
+            hasSpecialChars)
+        );
+    }
     if (userLoading) return <div className="relative h-screen w-screen"><Loading/></div>
     if (userError) return <Notfound/>
     return (
@@ -162,7 +186,7 @@ export default function Profile() {
                             </div>
                             <div className='flex justify-between items-center mt-2'>
                             <div className='bg-blue-600 text-white px-4 py-1 w-[170px] rounded-xl text-center cursor-pointer ' onClick={handlePreference}>Set Preferences</div>
-                            <div className='bg-[#D20D00] text-white px-4 py-1 w-[170px] rounded-xl text-center cursor-pointer ' onClick={handleReset}> Reset Password</div>
+                            <div className='bg-[#D20D00] text-white px-4 py-1 w-[170px] rounded-xl text-center cursor-pointer ' onClick={() => isreset(true)}> Reset Password</div>
                             </div>
                             </div>
                         { userInfo?.description &&  (<div className='overflow-auto wrapper h-[170px] w-[440px] max-sm:w-[300px] bg-white border border-[#bdbdbd] rounded-lg px-4 py-2 mt-4'>
@@ -188,10 +212,32 @@ export default function Profile() {
         {reset &&
               <div className='fixed inset-0 z-50 flex backdrop-blur-md justify-center items-center w-screen h-screen' >
               <div className=" bg-gray-200 shadow-xl rounded-lg w-[500px] h-[230px] max-[520px]:w-[400px] max-[415px]:w-[300px]">
-              <h1 className="flex justify-end pr-2 text-xl cursor-pointer" onClick={()=>{isreset(false)}}>×</h1>
-              <form className='flex flex-col gap-8' onSubmit={handleOtpSubmit}>
+              <h1 className="flex justify-end pr-2 text-3xl cursor-pointer" onClick={()=>{isreset(false) ; window.location.reload();}}>×</h1>
+              <form className='flex flex-col justify-center items-center gap-8' onSubmit={handleReset} >
+                <p className='text-xl font-semibold'>To reset you password, you must enter you email :</p>
             <input
-                className='outline-none cursor-text p-2'
+                className='outline-none cursor-text rounded-lg w-64 p-2'
+                type="email"
+                placeholder="Enter Your Email"
+                name="Email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+                required
+            />
+            <button className='h-8 px-4 font-semibold bg-gradient-to-r from-sky-500 to-indigo-500 hover:scale-[1.05] text-md rounded-full text-white mb-4' type="submit" >Continue</button>
+    </form>
+              </div>
+          </div>
+      }
+        {ootp &&
+              <div className='fixed inset-0 z-50 flex backdrop-blur-md justify-center items-center w-screen h-screen' >
+              <div className=" bg-gray-200 shadow-xl rounded-lg w-[500px] h-[230px] max-[520px]:w-[400px] max-[415px]:w-[300px]">
+              <h1 className="flex justify-end pr-2 text-3xl cursor-pointer" onClick={()=>{isotp(false) ; window.location.reload();}}>×</h1>
+              <form className='flex flex-col justify-center items-center ' onSubmit={handleOtpSubmit}>
+                <p className='text-xl font-medium px-4 mb-4 '>We have sent to your Email <span className='text-xl font-bold'>{email}</span> a verification code, write it here :</p>
+                { error && <p className='text-red-500 text-sm font-semibold'>Code Incorrect</p>}
+            <input
+                className='outline-none  cursor-text rounded-lg w-64 p-2'
                 type="text"
                 placeholder="Code Otp"
                 name="CodeOtp"
@@ -199,19 +245,23 @@ export default function Profile() {
                 value={Otp}
                 required
             />
-            <button className='h-8 bg-gradient-to-r from-sky-500 to-indigo-500 hover:scale-[1.05] text-md rounded-full text-white mb-4' type="submit" >Continue</button>
+            <button className='h-8 mt-4 px-4 font-semibold bg-gradient-to-r from-sky-500 to-indigo-500 hover:scale-[1.05] text-md rounded-full text-white mb-4' type="submit" >Continue</button>
     </form>
               </div>
           </div>
       }
         {Ver &&
               <div className='fixed inset-0 z-50 flex backdrop-blur-md justify-center items-center w-screen h-screen' >
-              <div className=" bg-gray-200 shadow-xl rounded-lg w-[500px] h-[230px] max-[520px]:w-[400px] max-[415px]:w-[300px]">
-              <h1 className="flex justify-end pr-2 text-xl cursor-pointer" onClick={()=>{setVer(false)}}>×</h1>
-              <form className='flex flex-col gap-8' onSubmit={handleSubmit}>
+              <div className=" bg-gray-200 shadow-xl rounded-lg w-[500px] h-[300px] max-[520px]:w-[400px] max-[415px]:w-[300px]">
+              <h1 className="flex justify-end pr-2 text-2xl cursor-pointer" onClick={()=>{setVer(false) ; window.location.reload();}}>×</h1>
+              <form className='flex flex-col justify-center items-center ' onSubmit={handleSubmit}>
+                <p className='text-xl font-medium px-4 mb-4 '> Enter your new password </p>
                 {match &&<div className='text-sm font-semibold text-red-500'>Password does not match </div>}
+                {!passwordchecked && <div className='text-sm font-semibold text-red-500'>
+              Please ensure that the password contains a mix of <br />uppercase 
+              and lowercase letters,numbers and special letters.</div>}
             <input
-                className='outline-none cursor-text p-2'
+                className='outline-none cursor-text p-2 w-64 rounded-lg'
                 type="password"
                 placeholder="Password"
                 name="password"
@@ -220,7 +270,7 @@ export default function Profile() {
                 required
             />
             <input
-                className='p-2 outline-none'
+                className='p-2 outline-none mt-4 w-64 rounded-lg'
                 type="password"
                 placeholder="Confirm Password"
                 name="Confirm-password"
@@ -228,7 +278,7 @@ export default function Profile() {
                 value={confirm}
                 required
             />
-            <button className='h-8 bg-gradient-to-r from-sky-500 to-indigo-500 hover:scale-[1.05] text-md rounded-full text-white mb-4' type="submit" >Continue</button>
+            <button className='h-8 mt-4 px-4 font-semibold bg-gradient-to-r from-sky-500 to-indigo-500 hover:scale-[1.05] text-md rounded-full text-white mb-4' type="submit" >Continue</button>
     </form>
               </div>
           </div>

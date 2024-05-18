@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Components/CustomNavbar';
 import UserIcon from '../Assets/images/userIcon.svg';
 import ImageCropper from '../Components/ImageCropper';
 import { useProfileImage } from '../Components/ProfileImageContext';
 import axios from 'axios';
+import { useQuery } from 'react-query';
+
 
 const EditProfile = () => {
+  const { data: userData, isLoading, isError } = useQuery(['userData'], fetchUserData);
   const [charCount, setCharCount] = useState(0);
   const [username, setUsername] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -54,6 +57,26 @@ const EditProfile = () => {
     }
   };
 
+  async function fetchUserData() {
+    const token = localStorage.getItem('token');
+    if (token){
+      try {
+      const response = await fetch('http://localhost:8000/user', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch user data');
+      }
+      return response.json();
+    } catch (error) {
+      throw new Error(error.message);
+    }}
+    
+  }
+  
   const handlePhoneChange = (e) => {
     setPhoneNumber(e.target.value);
   };
@@ -77,6 +100,12 @@ const EditProfile = () => {
   const [modalOpen, setModalOpen] = useState(true);
   const [userIcon, setUserIcon] = useState(UserIcon);
 
+  useEffect(() => {
+    if (userData && userData.image) {
+      setUserIcon(`http://localhost:8000/assets/${userData.image}`);
+    }
+  }, [userData]);
+    
   const updateAvatar = (imgSrc) => {
     setUserIcon(imgSrc);
   };
@@ -88,11 +117,11 @@ const EditProfile = () => {
     >
       <Navbar />
       <main className='py-4 mx-32 my-20 max-xl:mx-0 space-y-4 bg-white rounded-lg px-[200px] max-lg:px-[100px] max-sm:px-10 min-h-adjust'>
-        <h1 className='flex justify-center text-3xl text-blue-950 font-semibold'>
+        <h1 className='flex justify-center text-3xl font-semibold text-blue-950'>
           Edit Profile
         </h1>
         <ImageCropper
-          userIcon={image} // Pass the image state as userIcon prop
+          userIcon={userIcon} // Pass the image state as userIcon prop
           updateAvatar={updateAvatar}
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}

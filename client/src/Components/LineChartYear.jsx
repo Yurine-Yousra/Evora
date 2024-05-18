@@ -62,7 +62,7 @@ const Data = [
   },
 ];
 
-export default function LineChartYear () {
+export default function LineChartYear ({data}) {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
@@ -79,11 +79,11 @@ export default function LineChartYear () {
     chartInstance.current = new Chart(myChartRef, {
       type: "line",
       data: {
-        labels:  Data.map((data) => data.name),
+        labels:  data.map((item) => item.year),
         datasets: [
           {
             label: "Line Chart",
-            data: Data.map((data)=> data.event ),
+            data: data.map((item)=> item.count ),
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             borderWidth: 2,

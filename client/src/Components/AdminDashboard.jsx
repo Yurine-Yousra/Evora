@@ -66,6 +66,7 @@ export default function AdminDashboard() {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
           }
         }).then(response => {
           if (!response.ok) {
@@ -82,6 +83,7 @@ export default function AdminDashboard() {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.get('token')}`,
           }
         }).then(response => {
           if (!response.ok) {
@@ -151,7 +153,7 @@ export default function AdminDashboard() {
                 <div className=" basis-1/2 ps-8 pe-8 max-[559px]:ps-2 max-[559px]:pe-2 w-fit cursor-pointer" onClick={()=> Navigate(`/EventPage/${card._id}`)}>
                     <h1 className="text-3xl text-black font-bold pb-4">{card.title}</h1>
                     <div className="pb-4"> 
-                        <p className="text-lg font-bold text-cyan-900"><span className="text-lg font-medium  text-black ">User Name :</span> {card.organizer.username}</p>
+                        <p className="text-lg font-bold text-cyan-900"><span className="text-lg font-medium  text-black ">User Name :</span> {card.organizer?.username}</p>
                         <p className="text-lg font-bold text-cyan-900"><span className="text-lg font-medium text-black ">Date :</span>{card.date}</p>
                         <p className="text-lg font-bold text-cyan-900"><span className="text-lg font-medium  text-black">Location :</span> {card.location.toUpperCase()}</p>
                         <p className="text-xl font-bold text-yellow-600" ><span className="text-lg font-medium  text-black">Price :</span> {card.price}</p>

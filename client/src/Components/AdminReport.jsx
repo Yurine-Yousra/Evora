@@ -39,14 +39,60 @@ export default function AdminReport({ data }) {
     }
   );
 
-  const handleSendWarning = async (eventId) => {
+  const handleSendWarning = async (event) => {
+    const eventId = event?.event._id ;
     try {
       await sendWarningMutation.mutateAsync(eventId);
       // If successful, you can perform any necessary actions, like refetching data
     } catch (error) {
       console.error("Error sending warning:", error);
     }
+    handleDeleteReport(event);
   };
+  const deleteEventMutation = useMutation((eventId) => {
+    return fetch(`http://localhost:8000/deleteEvent/${eventId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.get('token')}`,
+      }
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to approve event');
+      }
+      // Return the response
+      
+      window.location.reload();
+      return response.json();
+    });
+  });
+  const deleteReportMutation = useMutation((item) => {
+    return fetch('http://localhost:8000/deleteReport', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.get('token')}`,
+      },
+      body : JSON.stringify({report : item}),
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to approve event');
+      }
+      window.location.reload();
+      // Return the response
+      
+      return response.json();
+    });
+  });
+  const  handleDelteEvent = (id) => {
+    deleteEventMutation.mutate(id);
+  }
+  const handleDeleteReport = (item) => {
+  const updatedCardsData = CardsData.filter(card => card._id !== item._id);
+  setCardsData(updatedCardsData);
+  deleteReportMutation.mutate(item);
+  }
+
 
   return (
     <div className="lg:max-[1096px]:ps-[208px] min-[1096px]:max-[1195px]:ps-64 min-[1195px]:ps-96">
@@ -88,8 +134,8 @@ export default function AdminReport({ data }) {
       {CardsData.length !== 0 && (
         <div className="border-2 ms-4 mb-8 bg-gray-100 rounded-lg border-gray-300 flex flex-col justify-center items-center gap-4 p-4">
           {CardsData.map((card) => (
-            <div className=" bg-gray-200 flex justify-center items-center p-4 rounded-md border-2 w-full border-gray-300" key={card.id}>
-              <img className="w-[200px] h-[180px] basis-1/4 cursor-pointer" src={card.event?.image} onClick={() => handleSendWarning(card.event._id)} alt="" />
+            <div className=" bg-gray-200 flex justify-center items-center p-4 rounded-md border-2 w-full border-gray-300" key={card._id}>
+              <img className="w-[200px] h-[180px] basis-1/4 cursor-pointer" src={`http://localhost:8000/assets/${card.event?.image}`} onClick={() => handleSendWarning(card.event._id)} alt="" />
               <div className=" basis-1/2 ps-8 pe-8 w-fit">
                 <h1 className="text-3xl text-black font-bold pb-4">{card.event?.title}</h1>
                 <div className="pb-4">
@@ -98,9 +144,9 @@ export default function AdminReport({ data }) {
                 </div>
               </div>
               <div className=" basis-1/4 flex flex-col items-center gap-2">
-                <button className="border-none p-1 text-lg bg-red-700 rounded-lg text-white w-32 hover:scale-[1.05] transition duration-500">Delete Event</button>
-                <button className="border-none p-1 text-lg bg-slate-400 rounded-lg text-white w-32  hover:scale-[1.05] transition duration-500" onClick={() => handleSendWarning(card.event._id)}>Send Warning</button>
-                <button className="border-none p-1 text-lg bg-slate-400 rounded-lg text-white w-32 mb-4 hover:scale-[1.05] transition duration-500">Delete Report</button>
+                <button className="border-none p-1 text-lg bg-red-700 rounded-lg text-white w-32 hover:scale-[1.05] transition duration-500" onClick={() => handleDelteEvent(card.event?._id)}>Delete Event</button>
+                <button className="border-none p-1 text-lg bg-slate-400 rounded-lg text-white w-32  hover:scale-[1.05] transition duration-500" onClick={() => handleSendWarning(card)}>Send Warning</button>
+                <button className="border-none p-1 text-lg bg-slate-400 rounded-lg text-white w-32 mb-4 hover:scale-[1.05] transition duration-500" onClick={() => handleDeleteReport(card)} >Delete Report</button>
               </div>
             </div>
           ))}
