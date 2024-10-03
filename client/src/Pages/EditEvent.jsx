@@ -195,7 +195,7 @@ const EditEvent = () => {
     <div className='bg-[#E1E1E1] pb-8 w-full wrapper' >
       <Navbar />
       <main className='px-10 py-4 mx-32 my-20 max-md:mx-0 max-lg:mx-6 bg-white rounded-lg min-h-rest'>
-        <h1 className='flex justify-center text-3xl text-blue-950 font-semibold'>Create New Event</h1>
+        <h1 className='flex justify-center text-3xl text-blue-950 font-semibold'>Edit Your Event</h1>
         <form className='flex flex-col mt-4 space-y-3' onSubmit={handleSubmit}>
           <input 
           type="text" 
@@ -286,7 +286,6 @@ const EditEvent = () => {
           <select value={category} onChange={handleCategoryChange}  className="block appearance-none w-full cursor-pointer bg-white border border-[#bdbdbd] text-gray-600 py-2 px-2 pr-8 rounded-lg shadow-sm leading-tight focus:outline-none focus:text-black focus:bg-white focus:border-gray-500">
             <option value="" disabled hidden>Select a Category</option>
             <option value="Business">Business</option>
-            <option value="Cultural">Cultural</option>*
             <option value="Politics">Politics</option>
             <option value="Sports">Sports</option>
             <option value="Educational">Educational</option>

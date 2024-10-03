@@ -1,4 +1,3 @@
-import React, {useEffect, useState} from 'react';
 import Navbar from '../Components/CustomNavbar';
 import event from '../Assets/event.png';
 import create from '../Assets/create.png';
@@ -18,7 +17,7 @@ const About = () => {
         </header>
         <section className='px-8 max-[626px]:px-6 max-[587px]:px-4 max-[480px]:px-2 py-6 max-[850px]:py-4 max-[700px]:py-2 bg-blue-600 h-fit rounded-3xl mx-28 max-[1260px]:mx-12 max-[540px]:mx-8 max-[490px]:mx-6'>
             <article className='flex flex-col items-center justify-center text-lg max-[712px]:text-base max-[540px]:text-sm font-semibold text-center text-white'>
-                Euvora is a vibrant and dynamic event platform designed to bring people together from across the globe and within local communities. Whether you're looking to host an event, join an existing one, or simply explore the diverse range of activities available, Euvora provides a seamless and interactive experience. With the ability to unite individuals online and in real life, Euvora offers a unique opportunity to connect with others, share experiences, and create unforgettable memories. Purchase tickets, create your own events, and discover new adventures with Euvora.
+                Euvora is a vibrant and dynamic event platform designed to bring people together from across the globe and within local communities. Whether you are looking to host an event, join an existing one, or simply explore the diverse range of activities available, Euvora provides a seamless and interactive experience. With the ability to unite individuals online and in real life, Euvora offers a unique opportunity to connect with others, share experiences, and create unforgettable memories. Purchase tickets, create your own events, and discover new adventures with Euvora.
             </article>
         </section>
 

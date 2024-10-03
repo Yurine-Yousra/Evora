@@ -134,7 +134,7 @@ export default function UserProfile() {
                           onClick={() => onToggleFollow(id, isUserFollowed(id))}
                           className={`cursor-pointer ${isUserFollowed(id) ? 'text-red-500' : 'text-blue-500'}`}
                         >
-                          {isUserFollowed(id) ? 'Unfollow' : 'Follow back'}
+                          {isUserFollowed(id) ? 'Unfollow' : 'Follow '}
                         </p></div>
                         </div>
                        { userInfo?.description &&  (<div className='overflow-auto wrapper h-[170px] w-[440px] max-sm:w-[300px] bg-white border border-[#bdbdbd] rounded-lg px-4 py-2 mt-4'>

@@ -30,7 +30,7 @@ const deleteEvent = async (eventId, token) => {
   };
   const deleteEvent2 = async (eventId, token) => {
     const response = await fetch(`http://localhost:8000/deletEvent/${eventId}`, {
-      method: 'POST',
+      method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ const deleteEvent = async (eventId, token) => {
           {EventF.map((card) => (
               <div className='flex flex-col w-[280px]' key={card._id}>
                     <div className="cards1"  >
-                    <img className='w-[280px] h-[220px]' src={`http://localhost:8000/assets/${card.image}`} alt="image" />
+                    <img className='h-[200px] w-full' src={`http://localhost:8000/assets/${card.image}`} alt="image" />
                     <div className="absolute top-0 left-0 bg-white pt-0.5 pb-0.5 pe-2 ps-2">
                  {card.sold ? <div className='text-base text-red-500 font-bold'>Canceled</div>:<p className="text-base font-medium">{card.price}</p>}</div>
                 <div onClick={() => handleCardClick(card._id)} className="flex items-center justify-between pt-2 pb-2 cursor-pointer ps-1 pe-2">
@@ -168,7 +168,7 @@ const deleteEvent = async (eventId, token) => {
                     <div className='space-x-6'>
                       {!passed && <button className='bg-red-600 rounded-xl font-semibold text-lg text-white pt-2 pb-2 w-32 pe-4 ps-4 mt-4 hover:scale-[1.01] hover:shadow-xl' onClick={() => handleDelete(card._id)}>Cancel </button>}
                       {passed && <button className='bg-red-600 rounded-xl font-semibold text-lg text-white pt-2 pb-2 w-32 pe-4 ps-4 mt-4 hover:scale-[1.01] hover:shadow-xl' onClick={() => handleDelete2(card._id)}>Delete </button>}
-                      <button className='bg-blue-600 rounded-xl font-semibold text-lg text-white pt-2 pb-2 w-32 pe-4 ps-4 mt-4 hover:scale-[1.01] hover:shadow-xl' onClick={() => handleEdit(card._id)}>Edit</button>
+                      {!passed && <button className='bg-blue-600 rounded-xl font-semibold text-lg text-white pt-2 pb-2 w-32 pe-4 ps-4 mt-4 hover:scale-[1.01] hover:shadow-xl' onClick={() => handleEdit(card._id)}>Edit</button>}
                       </div> }
               </div>
             ))}  
@@ -189,9 +189,9 @@ const UserEvents = ({ isUser, data }) => {
           </div>
         </div>
         <div className='w-full'>
-          <h3 className="text-lg font-semibold">Passed</h3>
+         { data && <h3 className="text-lg font-semibold"></h3>}
           <div className="grid mb-4 gap-x-32 grid-cols-3 max-[1469px]:grid-cols-2 max-[1469px]:gap-x-16 max-[1105px]:grid-cols-3 max-[996px]:grid-cols-2 max-md:gap-0 max-[588px]:grid-cols-1 max-md:ml-4 max-[588px]:ml-10 max-[354px]:ml-0">
-            <ShowingEventCard data={data} token={token} passed={true} />
+          <ShowingEventCard data={data} token={token} isUser={isUser} passed={true} />
           </div>
         </div>
       </section>

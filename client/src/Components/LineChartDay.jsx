@@ -1,109 +1,31 @@
 import { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
+
 const Data = [
-  {
-    name: 'Sun',
-    event: 4000,
-    product2: 2400,
-  },
-  {
-    name: 'Mon',
-    event: 3000,
-    product2: 2210,
-  },
-  {
-    name: 'Tue',
-    event: 2000,
-    product2: 2290,
-  },
-  {
-    name: 'Wed',
-    event: 2780,
-    product2: 2000,
-  },
-  {
-    name: 'Thu',
-    event: 1890,
-    product2: 2181,
-  },
-  {
-    name: 'Fri',
-    event: 2390,
-    product2: 2500,
-  },{
-    name: 'Sat',
-    event: 4000,
-    product2: 2400,
-  },{
-    name: 'Sun',
-    event: 4000,
-    product2: 2400,
-  },
-  {
-    name: 'Mon',
-    event: 3000,
-    product2: 2210,
-  },
-  {
-    name: 'Tue',
-    event: 2000,
-    product2: 2290,
-  },
-  {
-    name: 'Wed',
-    event: 2780,
-    product2: 2000,
-  },
-  {
-    name: 'Thu',
-    event: 1890,
-    product2: 2181,
-  },
-  {
-    name: 'Fri',
-    event: 2390,
-    product2: 2500,
-  },{
-    name: 'Sat',
-    event: 4000,
-    product2: 2400,
-  },{
-    name: 'Sun',
-    event: 4000,
-    product2: 2400,
-  },
-  {
-    name: 'Mon',
-    event: 3000,
-    product2: 2210,
-  },
-  {
-    name: 'Tue',
-    event: 2000,
-    product2: 2290,
-  },
-  {
-    name: 'Wed',
-    event: 2780,
-    product2: 2000,
-  },
-  {
-    name: 'Thu',
-    event: 1890,
-    product2: 2181,
-  },
-  {
-    name: 'Fri',
-    event: 2390,
-    product2: 2500,
-  },{
-    name: 'Sat',
-    event: 4000,
-    product2: 2400,
-  },
+  { name: 'Sun', event: 4000, product2: 2400 },
+  { name: 'Mon', event: 3000, product2: 2210 },
+  { name: 'Tue', event: 2000, product2: 2290 },
+  { name: 'Wed', event: 2780, product2: 2000 },
+  { name: 'Thu', event: 1890, product2: 2181 },
+  { name: 'Fri', event: 2390, product2: 2500 },
+  { name: 'Sat', event: 4000, product2: 2400 },
+  { name: 'Sun', event: 4000, product2: 2400 },
+  { name: 'Mon', event: 3000, product2: 2210 },
+  { name: 'Tue', event: 2000, product2: 2290 },
+  { name: 'Wed', event: 2780, product2: 2000 },
+  { name: 'Thu', event: 1890, product2: 2181 },
+  { name: 'Fri', event: 2390, product2: 2500 },
+  { name: 'Sat', event: 4000, product2: 2400 },
+  { name: 'Sun', event: 4000, product2: 2400 },
+  { name: 'Mon', event: 3000, product2: 2210 },
+  { name: 'Tue', event: 2000, product2: 2290 },
+  { name: 'Wed', event: 2780, product2: 2000 },
+  { name: 'Thu', event: 1890, product2: 2181 },
+  { name: 'Fri', event: 2390, product2: 2500 },
+  { name: 'Sat', event: 4000, product2: 2400 },
 ];
 
-export default function LineChartDay({data}) {
+export default function LineChartDay() {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
@@ -120,11 +42,11 @@ export default function LineChartDay({data}) {
     chartInstance.current = new Chart(myChartRef, {
       type: "line",
       data: {
-        labels:  data.map((item) => item.day),
+        labels: Data.map((item) => item.name),
         datasets: [
           {
-            label: "Line Chart",
-            data: data.map((item)=> item.count ),
+            label: "Event",
+            data: Data.map((item) => item.event),
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             borderWidth: 2,

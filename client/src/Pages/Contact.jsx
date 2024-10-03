@@ -49,16 +49,16 @@ const Contact = () => {
                         <div className='flex flex-row gap-x-4 max-[503px]:flex-col gap-y-4'>
                             <div>
                                 <p className='text-white'>First Name</p>
-                                <input className='h-10 px-2 rounded-lg outline-none' size={25} value={firstName} onChange={(e) => setFirstName(e.target.value)} required type="text" />
+                                <input className='h-10 px-2 rounded-lg outline-none' size={27} value={firstName} onChange={(e) => setFirstName(e.target.value)} required type="text" />
                             </div>
                             <div>
                                 <p className='text-white'>Last Name</p>
-                                <input className='h-10 px-2 rounded-lg outline-none' size={25} value={lastName} onChange={(e) => setLastName(e.target.value)} required type="text" />
+                                <input className='h-10 px-2 rounded-lg outline-none' size={27} value={lastName} onChange={(e) => setLastName(e.target.value)} required type="text" />
                             </div>
                         </div>
                         <div className='w-full'>
                             <p className='text-white'>Email</p>
-                            <input className='h-10 px-2 rounded-lg outline-none' size={55} value={email} onChange={(e) => setEmail(e.target.value)} required type="email" />
+                            <input className='h-10 px-2 rounded-lg outline-none' size={63} value={email} onChange={(e) => setEmail(e.target.value)} required type="email" />
                         </div>
                         <div>
                             <p className='text-white'>What can we help you with</p>

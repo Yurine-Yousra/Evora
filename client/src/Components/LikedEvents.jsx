@@ -14,7 +14,7 @@ const ShowingEventCard = ({ data }) => {
       {data?.likedEvents.
       map((card) => (
         <div className="cards2" onClick={() => handleCardClick(card._id)} key={card._id}>
-          <img src={`http://localhost:8000/assets/${card.image}`} alt="image"/>
+          <img className="h-[200px] w-full"src={`http://localhost:8000/assets/${card.image}`} alt="image"/>
                 <div className="absolute top-0 left-0 bg-white pt-0.5 pb-0.5 pe-2 ps-2"><p className="text-base font-medium">{card.price}</p></div>
                 <div className="flex justify-between items-center pt-4 pb-4 ps-1 pe-2">
                     <div className="basis-1/6 font-medium text-lg text-center">{card.date}</div>

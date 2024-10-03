@@ -85,12 +85,12 @@ const CustomNavbar = () => {
             </div>
             <div className="flex gap-24 max-[500px]:gap-16">
                 <div className='flex gap-12 mt-2'>
-                    <img 
+                    {localStorage.getItem('token') && <img 
                     src={Doorbell} 
                     alt="" 
                     onClick={()=>setNotificationToogleDropdown((prev) => !prev)}
                     className='transition duration-300 ease-in-out transform cursor-pointer h-7 w-7 hover:scale-110' 
-                  />
+                  />}
                   {notificationToogleDropdown && 
                     <div className='wrapper text-[#393939] absolute z-20 overflow-y-auto top-14 right-24 rounded-lg bg-[#E1E1E1] w-[230px] max-h-[229px] flex flex-col items-center'>
                       <p className='left-0 w-full pb-1 pl-3 border-b border-slate-100'>Notifications</p>
@@ -109,7 +109,7 @@ const CustomNavbar = () => {
                           </span>
                         ))
                       ): (
-                        <p>No notifications</p>
+                       <p></p>
                       )}
                       {notifications2 && notifications2.length > 0 ?(notifications2.map((notification) => (
                         <span
@@ -126,29 +126,37 @@ const CustomNavbar = () => {
                         </span>
                       ))
                     )  : (
-                        <p>No notifications</p>
+                        <p></p>
                       )}
                     </div>
                   }
                 </div>
                 <div>
-                  <img 
+                  {localStorage.getItem('token') && <img 
                     className='w-12 h-12 rounded-full cursor-pointer'
                     src={`http://localhost:8000/assets/${userData?.image}`}
                     onClick={() => setToogleDropdown((prev) => !prev)}
-                  />
+                  />}
+                  {!localStorage.getItem('token') && <div className='space-x-3 max-[420px]:space-x-1'>
+                  <Link className='px-6 py-1 pb-2 bg-yellow-500 rounded-3xl hover:bg-yellow-600 max-[380px]:px-4 max-[340px]:px-2' to="/signup">
+                    Sign Up
+                  </Link>
+                  <Link className='py-1 pb-2 border-blue-600 border-2 bg-white rounded-3xl px-7 hover:bg-slate-300 max-[380px]:px-4 max-[340px]:px-2' to="/login">
+                    Log In
+                  </Link>
+                </div>}
                   {toogleDropdown && 
-                  <div className='absolute z-20 top-2 right-24 rounded-lg bg-[#E1E1E1] w-[230px] h-[250px] flex flex-col gap-4 items-center'>
+                  <div className='absolute z-20 top-2 right-24 rounded-lg bg-[#E1E1E1] w-[230px] h-[250px] flex flex-col gap-4 justify-center items-center'>
                     <span className='flex flex-row items-center justify-center my-2 mt-4 mr-11'>
                       <img 
                         className='w-10 h-10 rounded-full cursor-pointer'
                         src={`http://localhost:8000/assets/${userData?.image}`} 
                         alt=''
                       />
-                      <p>{userData?.username}</p>
+                      <p className='ps-2 font-semibold font-serif text-sm'>{userData?.username}</p>
                     </span>
                     <Link
-                      to={`/Profile/${userData?._id}`}
+                      to={'/Profile'}
                       className='font-medium text-gray-700 text font-inter hover:text-gray-500'
                       onClick={() => setToogleDropdown(false)}
                     >

@@ -66,7 +66,7 @@ export default function AdminDashboard() {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
           }
         }).then(response => {
           if (!response.ok) {
@@ -83,7 +83,6 @@ export default function AdminDashboard() {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.get('token')}`,
           }
         }).then(response => {
           if (!response.ok) {
@@ -119,7 +118,7 @@ export default function AdminDashboard() {
       <div className="rounded-2xl shadow-md bg-white w-[400px] max-sm:w-full flex gap-2 justify-center items-center ps-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
         <g opacity="0.5">
-        <circle cx="5.78721" cy="5.78721" r="5.09339" stroke="black" stroke-width="1.38765"/>
+        <circle cx="5.78721" cy="5.78721" r="5.09339" stroke="black"/>
         <path d="M13.653 14.7359C14.0594 15.1424 14.7184 15.1423 15.1248 14.7359C15.5312 14.3294 15.5312 13.6705 15.1247 13.2641L13.653 14.7359ZM15.1247 13.2641L10.4442 8.58378L8.97243 10.0556L13.653 14.7359L15.1247 13.2641Z" fill="black"/>
         </g>
       </svg>

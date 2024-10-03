@@ -127,7 +127,7 @@ const handleSubmit = async (event) => {
                     <div className='absolute flex items-center justify-center w-full h-full'>
                         <h1 className='text-6xl font-bold text-white'>{event.title}</h1>
                     </div>
-                    <img className='sm:rounded-lg w-[700px] max-sm:w-full object-cover h-[380px]' src={`http://localhost:8000/assets/${event.image}`} alt="" />
+                    <img className='sm:rounded-lg w-[700px] max-sm:w-full  object-cover h-[380px]' src={`http://localhost:8000/assets/${event.image}`} alt="" />
                     <div className='absolute flex flex-row justify-between p-2 space-x-[600px] max-[820px]:space-x-[580px] max-[790px]:space-x-[550px] max-md:space-x-[520px] max-[730px]:space-x-[480px] max-[690px]:space-x-[450px] max-[670px]:space-x-[490px] max-sm:space-x-[240px]'>
                         <div className='flex flex-row'>
                             <img className='' src={EmptyLike} alt="" />
@@ -145,15 +145,15 @@ const handleSubmit = async (event) => {
                 <div className='w-full max-md:order-2'>
                     <div className='w-[500px] flex flex-col space-y-2 max-md:w-full'>
                         <div className='flex items-center justify-start ps-5 bg-white rounded-lg h-16'>
-                            <p>{event.date}</p>
+                            <p className='font-semibold'>{event.date} | {event.location},{event.place}</p>
                         </div>
                         <div className='flex items-center justify-start bg-white rounded-lg '>
-                            <p className='px-4 py-5 overflow-auto max-h-35 wrapper'>
+                            <p className='px-4 font-semibold py-5 overflow-auto max-h-35 wrapper'>
                             {event.description}
                             </p>
                         </div>
                         <div className='flex items-center justify-start bg-white rounded-lg '>
-                            <p className='px-4 py-5 overflow-auto max-h-35 wrapper'>
+                            <p className='px-4 py-5 overflow-auto text-lg font-bold max-h-35 wrapper'>
                             {event.price}
                             </p>
                         </div>

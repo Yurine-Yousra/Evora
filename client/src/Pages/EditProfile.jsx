@@ -16,18 +16,16 @@ const EditProfile = () => {
   const [email, setEmail] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
+  const [Number,setNumber] = useState(false);
   const profileImage = useProfileImage();
   const navigate = useNavigate();
   console.log(profileImage);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({
-      username,
-      phoneNumber,
-      email,
-      description,
-      image : profileImage,
-    })
+    if(phoneNumber.length != 13){
+      setNumber(true);
+      return;
+    }
     try {
       const response = await axios.put(
         'http://localhost:8000/UpdateYourInfos',
@@ -47,7 +45,7 @@ const EditProfile = () => {
       );
 
       if (response.status === 200) {
-        navigate(`/profile/${localStorage.getItem('userId')}`);
+        navigate(`/profile`);
       } else {
         throw new Error('Failed to update profile');
       }
@@ -143,6 +141,7 @@ const EditProfile = () => {
         </div>
         <div className='flex flex-col'>
           <p className='ml-4'>Phone Number</p>
+          {Number &&  <p className='text-red-600 font-semibold text-md'>you should enter your correct number !!</p>}
           <input
             value={phoneNumber}
             type='tel'

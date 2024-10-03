@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import img1 from '../Assets/Rectangle 43.png';
 import img2 from '../Assets/Rectangle 38.png';
 import img3 from '../Assets/Rectangle 39.png';
-import img4 from '../Assets/Rectangle 40.png';
+import img4 from '../Assets/images/pexels-jibarofoto-2774556.jpg';
 import img5 from '../Assets/Rectangle 41.png';
 import img6 from '../Assets/Rectangle 42.png';
 import { useMutation } from 'react-query';
@@ -34,11 +34,11 @@ export default function Preference() {
   const [myArray, setMyArray] = useState([]);
   const imageDATA = [
     { img: img1, text: 'Business' },
-    { img: img2, text: 'Cultural' },
-    { img: img3, text: 'Politics' },
-    { img: img4, text: 'Sports' },
+    { img: img2, text: 'Art' },
+    { img: img4, text: 'Politics' },
+    { img: img6, text: 'Sports' },
     { img: img5, text: 'Educational' },
-    { img: img6, text: 'Health & Care' },
+    { img: img3, text: 'Health & Care' },
   ];
   console.log(myArray);
   const handleClick = (dataindex) => {
@@ -164,7 +164,7 @@ try {
         <div className='h-max w-max grid grid-cols-3 gap-4 max-[826px]:grid-cols-2'>
           {imageDATA.map((image, index) => (
             <div className={`w-64 h-64 cursor-pointer max-[560px]:w-40 max-[560px]:h-40 max-[826px]:h-[170px] max-[826px]:w-[170px] flex flex-col hover:scale-[1.01] ${index === 0 ? a0 : index === 1 ? a1 : index === 2 ? a2 : index === 3 ? a3 : index === 4 ? a4 : a5}`} onClick={() => handleClick(index)} key={index}>
-              <img className='' src={image.img} alt='image' />
+              <img className='w-[250px] h-[250px] rounded-lg' src={image.img} alt='image' />
               <h1 className={`text-md text-center font-bold  ${index === 0 ? h0 : index === 1 ? h1 : index === 2 ? h2 : index === 3 ? h3 : index === 4 ? h4 : h5}`}>{image.text}</h1>
             </div>
           ))}

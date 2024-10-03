@@ -180,16 +180,16 @@ export default function Profile() {
                                 <p>Email</p>
                                 <p>{userInfo?.email}</p>
                             </div>
-                            <div className='flex justify-between text-[#414141]'>
+                            {userInfo?.phoneNumber && <div className='flex justify-between text-[#414141]'>
                                 <p>Phone Number</p>
                                 <p>{userInfo?.phoneNumber}</p>
-                            </div>
+                            </div>}
                             <div className='flex justify-between items-center mt-2'>
                             <div className='bg-blue-600 text-white px-4 py-1 w-[170px] rounded-xl text-center cursor-pointer ' onClick={handlePreference}>Set Preferences</div>
                             <div className='bg-[#D20D00] text-white px-4 py-1 w-[170px] rounded-xl text-center cursor-pointer ' onClick={() => isreset(true)}> Reset Password</div>
                             </div>
                             </div>
-                        { userInfo?.description &&  (<div className='overflow-auto wrapper h-[170px] w-[440px] max-sm:w-[300px] bg-white border border-[#bdbdbd] rounded-lg px-4 py-2 mt-4'>
+                        { userInfo?.description &&  (<div className='overflow-auto wrapper text-lg font-md w-[440px] max-sm:w-[300px] bg-white border border-[#bdbdbd] rounded-lg px-4 pt-2 pb-8 mt-4'>
                             <h2 className='mb-1 font-semibold'>Description</h2>
                             <p className='w-full overflow-y-auto break-words outline-none' placeholder='Your Description...'>{userInfo?.description}</p>
                         </div>)}

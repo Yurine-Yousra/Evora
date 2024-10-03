@@ -58,7 +58,7 @@ const Userlists = ({userInfo ,  userList }) => {
             onClick={() => onToggleFollow(user._id, isUserFollowed(user._id))}
             className={`cursor-pointer ${isUserFollowed(user._id) ? 'text-red-500' : 'text-blue-500'}`}
           >
-         {isUserFollowed(user._id) ? 'Unfollow' : 'Follow back'}
+         {isUserFollowed(user._id) ? 'Unfollow' : 'Follow'}
           </p> }
         </div>
       ))}

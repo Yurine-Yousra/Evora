@@ -86,10 +86,10 @@ const Navbar = () => {
                   src={`http://localhost:8000/assets/${userData.image}`} // Assuming user's image is stored in userData
                   alt=''
                 />
-                <p>{userData?.username}</p> {/* Assuming user's username is stored in userData */}
+                <p className='ps-2 font-semibold font-serif text-sm'>{userData?.username}</p> {/* Assuming user's username is stored in userData */}
               </span>
               <Link
-                to={`/Profile/${userData?._id}`} // Assuming user's ID is stored in userData
+                to={'/Profile'} // Assuming user's ID is stored in userData
                 className='font-medium text-gray-700 text font-inter hover:text-gray-500'
                 onClick={() => setToggleDropdown(false)}
               >

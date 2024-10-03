@@ -20,6 +20,7 @@ import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import Faq from "./Pages/Faq";
 import Terms from "./Pages/Terms";
+import EventCategory from "./Pages/EventCategory";
 
 const queryClient = new QueryClient();
 
@@ -67,12 +68,13 @@ function App() {
                  <Route path="/SignUp" element={<SignUp />} />
                 <Route path="/Login" element={<Login />} />
                 <Route path="/Preference" element={<Preference />} />
-                <Route path="/Profile/:id" element={<Profile />} />
+                <Route path="/Profile" element={<Profile />} />
                 <Route path="/EditEvent/:id" element={<EditEvent />} />
                 <Route path="/CreateEvent" element={<CreateEvent />} />
                 <Route path="/EventPage/:id" element={<EventPage />} />
                 <Route path="/UserProfile/:id" element={<UserProfile />} />
                 <Route path="/EditProfile/:id" element={<EditProfile />} />
+                <Route path="/EventCategory/:id" element={<EventCategory />} />
                 <Route path="/*" element={<Notfound />} />
               </>
           </Routes>

@@ -299,7 +299,6 @@ const CreateEvent = () => {
           <select value={category} onChange={handleCategoryChange} required className="block appearance-none w-full cursor-pointer bg-white border border-[#bdbdbd] text-gray-600 py-2 px-2 pr-8 rounded-lg shadow-sm leading-tight focus:outline-none focus:text-black focus:bg-white focus:border-gray-500">
             <option value="" disabled hidden>Select a Category</option>
             <option value="Business">Business</option>
-            <option value="Cultural">Cultural</option>
             <option value="Art">Art</option>
             <option value="Politics">Politics</option>
             <option value="Sports">Sports</option>

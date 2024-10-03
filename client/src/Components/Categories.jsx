@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
 const categoriesData = [
   ['Business', cat1],
-  ['Cultural', cat2],
   ['Art', cat2],
   ['Politics', cat4],
   ['Sports', cat5],
@@ -38,7 +37,12 @@ const fetchPosts = async () => {
   }  
   } else {
     try {
-      const response = await fetch('http://localhost:8000/randomEvents');
+      const response = await fetch('http://localhost:8000/randomEvents', {
+        method: 'GET', // Assuming you are performing a GET request
+        headers: {
+          'Content-Type': 'application/json' // Include if your API requires authentication
+        }
+      });
       const eventData = await response.json();
       console.log("Fetched data:", eventData);
   
@@ -72,7 +76,8 @@ export default function Categories() {
   }, []);
   
   async function fetchUserData() {
-    try {
+    if (id){
+      try {
       const response = await fetch(`http://localhost:8000/users/${id}`);
       if (!response.ok) {
         throw new Error('Failed to fetch user data');
@@ -81,6 +86,8 @@ export default function Categories() {
     } catch (error) {
       throw new Error(error.message);
     }
+  }
+    
 }
   useEffect(() => {
     if (events) {
@@ -181,7 +188,7 @@ export default function Categories() {
         {categoriesData.map(([title, url], index) => (
           <div key={index} className='flex flex-col items-center'>
             <div className='p-6 transition duration-200 ease-in-out delay-200 bg-white rounded-full cursor-pointer ellipse hover:shadow-lg hover:-translate-y-1'>
-              <img src={url} alt={title} />
+              <img onClick={() => {navigate(`/EventCategory/${title}`) ; localStorage.setItem('category' , title)}} src={url} alt={title} />
             </div>
             <p className='mt-1'>{title}</p>
           </div>
@@ -194,10 +201,13 @@ export default function Categories() {
           <div className="grid grid-cols-3 max-[1070px]:grid-cols-2 max-[711px]:grid-cols-1 justify-items-center mt-16 mb-16" >
             { data?.map((card) => (
               <div className="cards" key={card._id}>
-                          <img  src={`http://localhost:8000/assets/${card.image}`} alt="" />
+                          <img className="h-[200px] w-full" src={`http://localhost:8000/assets/${card.image}`} alt="" />
                           <div className="absolute top-0 left-0 bg-white pt-0.5 pb-0.5 pe-2 ps-2"><p className="text-base font-medium">{card.price} </p></div>
                           <div onClick={()=>{ if (!token) {setclick(true)} else {navigate(`/eventpage/${card._id}`)}}} className="flex items-center justify-between pt-4 pb-4 cursor-pointer ps-1 pe-2">
-                              <div className="text-xl font-medium text-center basis-1/6">{card.date}</div>
+                          <div className="font-medium text-center basis-1/6 text-md">
+                            <div>{new Date(card.date).getDate()}</div>
+                            <div>{new Date(card.date).toLocaleString('default', { month: 'short' })}</div>
+                          </div>
                               <div className="basis-3/6 ps-1">
                                   <h3   className="text-xl font-medium ">{card.title}</h3>
                                   <h4 >{card.organizer?.username}</h4>
